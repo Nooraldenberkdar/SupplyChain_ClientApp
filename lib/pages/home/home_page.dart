@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trademale/conrtollers/Products_controller.dart';
+import 'package:trademale/pages/profile/profile.dart';
 import 'package:trademale/utilities/dimensions.dart';
 import 'package:trademale/utilities/routeHelper.dart';
 import 'package:trademale/widgets/TabBar_button.dart';
@@ -16,6 +17,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  final TextEditingController _searchController = TextEditingController();
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   TabController? _tabController;
   ScrollController _scrollController = ScrollController();
   int activeTabIndex = 0;
@@ -39,6 +44,11 @@ class _HomePageState extends State<HomePage>
         // Load more products when scrolled to the bottom
       }
     });
+    _searchController.addListener(() {
+      productsController.filterProducts(_searchController
+          .text); // Assuming you have a method to filter products
+    });
+
     // The 'vsync' argument should typically be a TickerProvider, like 'this' for StatefulWidget.
   }
 
@@ -46,13 +56,19 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     _tabController?.dispose();
     _scrollController.dispose();
+    _searchController.dispose(); // Dispose of the TextEditingController
+
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       resizeToAvoidBottomInset: true,
+      drawer: Drawer(
+        child: ProfilePage(),
+      ),
       body: SafeArea(
         child: Container(
           margin: EdgeInsets.fromLTRB(Dimension.height10, Dimension.height10,
@@ -66,7 +82,9 @@ class _HomePageState extends State<HomePage>
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      _scaffoldKey.currentState?.openDrawer();
+                    },
                     child: Icon(
                         size: Dimension.iconSize40,
                         color: Color(0xffb5838d),
@@ -80,6 +98,7 @@ class _HomePageState extends State<HomePage>
               Text(
                 'Welcome,Noor',
                 style: TextStyle(
+                    fontFamily: 'Schyler',
                     fontWeight: FontWeight.w500,
                     fontSize: Dimension.font12,
                     color: Color(0xff5f5a5a),
@@ -105,6 +124,7 @@ class _HomePageState extends State<HomePage>
                         borderRadius: BorderRadius.circular(Dimension.radius20),
                       ),
                       child: TextField(
+                        controller: _searchController,
                         decoration: InputDecoration(
                           prefixIcon: Icon(Icons.search),
                           prefixIconColor: Color(0xff5f5a5a),
@@ -136,120 +156,137 @@ class _HomePageState extends State<HomePage>
               SizedBox(
                 height: Dimension.height10,
               ),
-              Expanded(
+              Padding(
+                padding: EdgeInsets.only(bottom: Dimension.height10),
                 child: Container(
-                  //color: Colors.yellow,
-                  child: DefaultTabController(
-                    length: 3,
-                    child: Column(
-                      children: [
-                        TabBar(
-                            indicatorColor: Colors.transparent,
-                            controller: _tabController,
-                            tabs: tabs = [
-                              TabBarButton(
-                                text: 'Food',
-                                width: Dimension.width50 * 1.5,
-                                height: Dimension.height20 * 2,
-                                backgroundColor: activeTabIndex == 0
-                                    ? Color(0xffe5989b)
-                                    : Colors.white,
-                              ),
-                              TabBarButton(
-                                text: 'Cloths',
-                                width: Dimension.width50 * 1.5,
-                                height: Dimension.height20 * 2,
-                                backgroundColor: activeTabIndex == 1
-                                    ? Color(0xffe5989b)
-                                    : Colors.white,
-                              ),
-                              TabBarButton(
-                                text: 'else',
-                                width: Dimension.width50 * 1.5,
-                                height: Dimension.height20 * 2,
-                                backgroundColor: activeTabIndex == 2
-                                    ? Color(0xffe5989b)
-                                    : Colors.white,
-                              )
-                            ]),
-                        Expanded(
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: [
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: GetBuilder<ProductsController>(
-                                        builder: (products) {
-                                      return products.pListIsLoaded
-                                          ? GridView.builder(
-                                              gridDelegate:
-                                                  SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount:
-                                                    2, // Number of products in a row
-                                                crossAxisSpacing:
-                                                    Dimension.width10,
-                                                mainAxisSpacing:
-                                                    Dimension.height10,
-                                              ),
-                                              itemCount: products
-                                                          .productsList.length >
-                                                      1
-                                                  ? products.productsList.length
-                                                  : 1,
-                                              itemBuilder: (context, index) {
-                                                return GestureDetector(
-                                                  onTap: () {
-                                                    Get.toNamed(
-                                                      routeHelper
-                                                          .getProductDetails(
-                                                              index, "home"),
-                                                    );
-                                                  },
-                                                  child: ProductItem(
-                                                    title: products
-                                                        .productsList[index]
-                                                        .name!,
-                                                    subtitle: products
-                                                        .productsList[index]
-                                                        .description!,
-                                                    imagePath:
-                                                        'assets/images/ph2.png',
-                                                    buyPrice: products
-                                                        .productsList[index]
-                                                        .price!,
-                                                    sellPrice: products
-                                                            .productsList[index]
-                                                            .pPrice ??
-                                                        0,
-                                                  ),
-                                                );
-                                              },
-                                              controller: _scrollController,
-                                            )
-                                          : Center(
-                                              child: CircularProgressIndicator(
-                                                color: Color(0xffe5989b),
-                                              ),
-                                            );
-                                    }),
-                                  ),
-                                ],
-                              ),
-                              Container(
-                                color: Colors.red,
-                                child: Icon(Icons.search),
-                              ),
-                              Container(
-                                  color: Colors.yellow,
-                                  child: Icon(Icons.settings)),
-                            ],
-                          ),
-                        ),
-                      ],
+                  width: Dimension.screenWidth,
+                  height: Dimension.screenHeight /
+                      4.3, // Adjust the height as needed.
+                  margin: EdgeInsets.only(top: Dimension.height10),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/images/promotionalPanner.jpeg'),
+                      // Put your promotional banner asset
+                      fit: BoxFit.fill,
                     ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  // If you have text on the banner, add it here within the Container.
+                ),
+              ),
+              Expanded(
+                child: DefaultTabController(
+                  length: 3,
+                  child: Column(
+                    children: [
+                      TabBar(
+                          indicatorColor: Colors.transparent,
+                          controller: _tabController,
+                          tabs: tabs = [
+                            TabBarButton(
+                              text: 'Electronics',
+                              width: Dimension.width50 * 3,
+                              height: Dimension.height20 * 2,
+                              backgroundColor: activeTabIndex == 0
+                                  ? Color(0xffe5989b)
+                                  : Colors.white,
+                            ),
+                            TabBarButton(
+                              text: 'Cloths',
+                              width: Dimension.width50 * 3,
+                              height: Dimension.height20 * 2,
+                              backgroundColor: activeTabIndex == 1
+                                  ? Color(0xffe5989b)
+                                  : Colors.white,
+                            ),
+                            TabBarButton(
+                              text: 'else',
+                              width: Dimension.width50 * 3,
+                              height: Dimension.height20 * 2,
+                              backgroundColor: activeTabIndex == 2
+                                  ? Color(0xffe5989b)
+                                  : Colors.white,
+                            )
+                          ]),
+                      Expanded(
+                        child: TabBarView(
+                          controller: _tabController,
+                          children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: GetBuilder<ProductsController>(
+                                      builder: (products) {
+                                    return products.pListIsLoaded
+                                        ? GridView.builder(
+                                            gridDelegate:
+                                                SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount:
+                                                  2, // Number of products in a row
+                                              crossAxisSpacing:
+                                                  Dimension.width10,
+                                              mainAxisSpacing:
+                                                  Dimension.height10,
+                                            ),
+                                            itemCount:
+                                                products.productsList.length > 1
+                                                    ? products
+                                                        .productsList.length
+                                                    : 1,
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  Get.toNamed(
+                                                    routeHelper
+                                                        .getProductDetails(
+                                                            index, "home"),
+                                                  );
+                                                },
+                                                child: ProductItem(
+                                                  id: products
+                                                      .productsList[index].id!,
+                                                  title: products
+                                                      .productsList[index]
+                                                      .name!,
+                                                  subtitle: products
+                                                      .productsList[index]
+                                                      .description!,
+                                                  imagePath:
+                                                      'assets/images/ph2.png',
+                                                  buyPrice: products
+                                                      .productsList[index]
+                                                      .price!,
+                                                  sellPrice: products
+                                                          .productsList[index]
+                                                          .pPrice ??
+                                                      0,
+                                                ),
+                                              );
+                                            },
+                                            controller: _scrollController,
+                                          )
+                                        : Center(
+                                            child: CircularProgressIndicator(
+                                              color: Color(0xffe5989b),
+                                            ),
+                                          );
+                                  }),
+                                ),
+                              ],
+                            ),
+                            Container(
+                              color: Colors.red,
+                              child: Icon(Icons.search),
+                            ),
+                            Container(
+                                color: Colors.yellow,
+                                child: Icon(Icons.settings)),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )

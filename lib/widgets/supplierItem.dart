@@ -71,6 +71,7 @@ class SupplierItem extends StatelessWidget {
                             title,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
+                              fontFamily: 'Schyler',
                               fontSize: Dimension.font12 * 1.7,
                               fontWeight: FontWeight.w900,
                               letterSpacing: Dimension.width5 / 3,
@@ -79,7 +80,7 @@ class SupplierItem extends StatelessWidget {
                           ),
                         ),
                         Icon(
-                          Icons.favorite_border,
+                          Icons.add,
                           color: Color(0xffe5989b),
                         ),
                       ],

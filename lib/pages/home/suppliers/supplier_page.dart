@@ -7,14 +7,19 @@ import 'package:trademale/utilities/routeHelper.dart';
 import '../../../widgets/app_icon.dart';
 import '../../../widgets/productItem_supplierPage.dart';
 
-class SupplierPage extends StatelessWidget {
+class SupplierPage extends StatefulWidget {
   int pageId;
 
   SupplierPage({super.key, required this.pageId});
 
   @override
+  State<SupplierPage> createState() => _SupplierPageState();
+}
+
+class _SupplierPageState extends State<SupplierPage> {
+  @override
   Widget build(BuildContext context) {
-    var supplier = Get.find<SuppliersController>().suppliersList[pageId];
+    var supplier = Get.find<SuppliersController>().suppliersList[widget.pageId];
     return Scaffold(
       body: SafeArea(
         child: GetBuilder<SuppliersController>(builder: (supplierController) {
@@ -54,6 +59,7 @@ class SupplierPage extends StatelessWidget {
                   child: Text(
                     supplier.name,
                     style: TextStyle(
+                        fontFamily: 'Schyler',
                         fontWeight: FontWeight.w900,
                         fontSize: Dimension.font20,
                         color: Colors.white,
@@ -63,7 +69,7 @@ class SupplierPage extends StatelessWidget {
               ),
               //go back button
               Positioned(
-                left: Dimension.width15,
+                left: Dimension.width10,
                 top: Dimension.height10,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,7 +79,7 @@ class SupplierPage extends StatelessWidget {
                         Get.back();
                       },
                       child: AppIcon(
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: Colors.white,
                         iconColor: Color(0xff6d6875),
                         icon: Icons.arrow_back_ios_new_rounded,
                       ),
@@ -92,7 +98,7 @@ class SupplierPage extends StatelessWidget {
                         Get.toNamed(routeHelper.getCart());
                       },
                       child: AppIcon(
-                        backgroundColor: Colors.transparent,
+                        backgroundColor: Colors.white,
                         iconColor: Color(0xff6d6875),
                         icon: Icons.shopping_cart_rounded,
                       ),
@@ -140,7 +146,7 @@ class SupplierPage extends StatelessWidget {
                       child: Icon(
                           size: Dimension.iconSize40,
                           color: Color(0xffb5838d),
-                          Icons.favorite_border),
+                          Icons.add),
                     ),
                   ],
                 ),
@@ -176,13 +182,15 @@ class SupplierPage extends StatelessWidget {
                                   onTap: () {
                                     Get.toNamed(routeHelper.getProductDetails(
                                         index, "supplier",
-                                        supplierId: pageId));
+                                        supplierId: widget.pageId));
+                                    print(
+                                        "index ${index} supplierId${widget.pageId}");
                                   },
                                   child: ProductItemSupplierPage(
                                     title: supplier.products[index].name,
                                     description:
                                         supplier.products[index].categoryId ??
-                                            "all",
+                                            "All",
                                     imagePath: 'assets/images/ph2.png',
                                     price: supplier.products[index].price ?? 0,
                                     pPrice:

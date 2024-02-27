@@ -24,6 +24,7 @@ class GetStartedPage extends StatelessWidget {
                   child: Text(
                     'TradeMale',
                     style: TextStyle(
+                        fontFamily: 'Schyler',
                         letterSpacing: 2,
                         fontWeight: FontWeight.w900,
                         color: Color(0xff6d6875),
@@ -104,6 +105,7 @@ class GetStartedPage extends StatelessWidget {
                         'The best Tradment App in Syria',
                         textAlign: TextAlign.center,
                         style: TextStyle(
+                          fontFamily: 'Schyler',
                           fontSize: Dimension.font26,
                           fontWeight: FontWeight.w900,
                           height: 3,
@@ -115,7 +117,7 @@ class GetStartedPage extends StatelessWidget {
                         width: Dimension.width50 * 3.6,
                         child: TextButton(
                           onPressed: () {
-                            Get.toNamed(routeHelper.getInitial());
+                            Get.toNamed(routeHelper.getSignUp());
                           },
                           style: TextButton.styleFrom(
                             primary: Colors.white,
@@ -129,6 +131,7 @@ class GetStartedPage extends StatelessWidget {
                             children: [
                               Text('Get Start',
                                   style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       letterSpacing: 0.8,
                                       color: Color(0xffffffff),
                                       height: 1.2,

@@ -21,6 +21,7 @@ class ProfileTap extends StatelessWidget {
               Text(
                 name,
                 style: TextStyle(
+                    fontFamily: 'Schyler',
                     fontWeight: FontWeight.w600,
                     fontSize: Dimension.font20,
                     color: Color(0xff6d6875),

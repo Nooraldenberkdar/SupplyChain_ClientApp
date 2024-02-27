@@ -1,9 +1,11 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:trademale/conrtollers/Products_controller.dart';
 import 'package:trademale/conrtollers/suppliers_controller.dart';
 import 'package:trademale/utilities/dimensions.dart';
+import 'package:trademale/utilities/routeHelper.dart';
 import 'package:trademale/widgets/app_icon.dart';
 
 import '../../../conrtollers/cart_controller.dart';
@@ -42,19 +44,75 @@ class ProductPage extends StatelessWidget {
           color: Colors.white,
           child: Column(
             children: [
-              Row(
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.back();
-                    },
-                    child: AppIcon(
-                        backgroundColor: Colors.transparent,
-                        iconColor: Color(0xff6d6875),
-                        icon: Icons.arrow_back_ios_new_rounded),
-                  ),
-                ],
-              ),
+              oldPage == 'supplier'
+                  ? Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Get.back();
+                          },
+                          child: AppIcon(
+                              backgroundColor: Colors.transparent,
+                              iconColor: Color(0xff6d6875),
+                              icon: Icons.arrow_back_ios_new_rounded),
+                        ),
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        GetBuilder<ProductsController>(
+                          builder: (productsController) {
+                            return GestureDetector(
+                              onTap: () {
+                                if (Get.find<ProductsController>().totalItems ==
+                                    0) {
+                                  Get.toNamed(routeHelper.getHead("0"));
+                                } else {
+                                  AwesomeDialog(
+                                    context: context,
+                                    dialogType: DialogType.warning,
+                                    animType: AnimType.topSlide,
+                                    showCloseIcon: true,
+                                    title: "warning",
+                                    desc:
+                                        "You have items in Cart, do you want to remove them!",
+                                    btnOkText: "yes",
+                                    btnOkOnPress: () {
+                                      productsController.clearCart();
+                                      Get.toNamed(routeHelper.getHead("0"));
+                                    },
+                                    btnCancelOnPress: () {},
+                                  ).show();
+                                }
+                              },
+                              child: AppIcon(
+                                  backgroundColor: Colors.transparent,
+                                  iconColor: Color(0xff6d6875),
+                                  icon: Icons.arrow_back_ios_new_rounded),
+                            );
+                          },
+                        ),
+                        Spacer(),
+                        GetBuilder<CartController>(
+                          builder: (cartController) {
+                            return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(routeHelper.getCart());
+                              },
+                              child: AppIcon(
+                                  backgroundColor: Colors.transparent,
+                                  iconColor: cartController.totalItems == 0
+                                      ? Color(0xff6d6875)
+                                      : Colors.green,
+                                  icon: Icons.shopping_cart_rounded),
+                            );
+                          },
+                        ),
+                        SizedBox(
+                          width: Dimension.height10,
+                        )
+                      ],
+                    ),
               Expanded(
                 child: Stack(
                   children: [
@@ -78,6 +136,7 @@ class ProductPage extends StatelessWidget {
                             Text(
                               'Still',
                               style: TextStyle(
+                                  fontFamily: 'Schyler',
                                   fontSize: Dimension.font12 * 1.5,
                                   fontWeight: FontWeight.w500,
                                   letterSpacing: 1.5,
@@ -187,6 +246,7 @@ class ProductPage extends StatelessWidget {
                                   Text(
                                     product.name!,
                                     style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       fontSize: Dimension.font20 * 1.2,
                                       fontWeight: FontWeight.w900,
                                       color: Color(0xff6d6875),
@@ -195,6 +255,7 @@ class ProductPage extends StatelessWidget {
                                   Text(
                                     '\$ ' + product.price.toString(),
                                     style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       fontSize: Dimension.font20 * 1.2,
                                       fontWeight: FontWeight.w900,
                                       color: Color(0xffe5989b),
@@ -209,12 +270,14 @@ class ProductPage extends StatelessWidget {
                                   Text(
                                     product.categoryId ?? 'All',
                                     style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       color: Color(0xff6d6875),
                                     ),
                                   ),
                                   Text(
                                     '\$ ' + product.pPrice.toString(),
                                     style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       fontSize: Dimension.font20 * 1.2,
                                       fontWeight: FontWeight.w900,
                                       color: Colors.green,
@@ -232,6 +295,7 @@ class ProductPage extends StatelessWidget {
                                   Text(
                                     'DESCRIPTION',
                                     style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       fontSize: Dimension.font20 * 1.2,
                                       fontWeight: FontWeight.w900,
                                       color: Color(0xff6d6875),
@@ -258,6 +322,7 @@ class ProductPage extends StatelessWidget {
                                         child: Text(
                                           'Add to Cart',
                                           style: TextStyle(
+                                            fontFamily: 'Schyler',
                                             fontSize: Dimension.font20,
                                             fontWeight: FontWeight.bold,
                                           ),
@@ -310,6 +375,7 @@ class ProductPage extends StatelessWidget {
                                 Text(
                                   ' Original product',
                                   style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       color: Color(0xff6d6875),
                                       fontWeight: FontWeight.w400,
                                       fontSize: Dimension.font12 * 1.5),
@@ -326,6 +392,7 @@ class ProductPage extends StatelessWidget {
                                 Text(
                                   ' Return of goods in 5 days',
                                   style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       color: Color(0xff6d6875),
                                       fontWeight: FontWeight.w400,
                                       fontSize: Dimension.font12 * 1.5),
@@ -342,6 +409,7 @@ class ProductPage extends StatelessWidget {
                                 Text(
                                   ' Pay directly at your place',
                                   style: TextStyle(
+                                      fontFamily: 'Schyler',
                                       color: Color(0xff6d6875),
                                       fontWeight: FontWeight.w400,
                                       fontSize: Dimension.font12 * 1.5),

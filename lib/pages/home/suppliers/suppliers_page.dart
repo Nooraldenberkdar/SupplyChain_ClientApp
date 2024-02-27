@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:trademale/conrtollers/suppliers_controller.dart';
+import 'package:trademale/data/repository/suppliers_repo.dart';
 import 'package:trademale/utilities/dimensions.dart';
 import 'package:trademale/utilities/routeHelper.dart';
-import 'package:trademale/widgets/supplierItem.dart';
 
+import '../../../conrtollers/suppliers_controller.dart';
 import '../../../widgets/app_icon.dart';
+import '../../../widgets/supplierItem.dart';
 
 class SuppliersPage extends StatefulWidget {
   const SuppliersPage({super.key});
@@ -15,15 +16,21 @@ class SuppliersPage extends StatefulWidget {
 }
 
 class _SuppliersPageState extends State<SuppliersPage> {
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    // Consider initializing the SuppliersController here if not already done elsewhere in your app
+    final SuppliersController suppliersController =
+        Get.put(SuppliersController(suppliersRepo: Get.find<SuppliersRepo>()));
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
             Container(
               padding: EdgeInsets.only(
-                  left: Dimension.width5, top: Dimension.width5),
+                  left: Dimension.height10, top: Dimension.height10),
               height: Dimension.height50 * 2.4,
               width: double.infinity,
               color: Color(0x33de1b25),
@@ -33,7 +40,7 @@ class _SuppliersPageState extends State<SuppliersPage> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Get.back();
+                          Get.offAllNamed(routeHelper.getHead("0"));
                         },
                         child: AppIcon(
                             backgroundColor: Colors.transparent,
@@ -51,13 +58,16 @@ class _SuppliersPageState extends State<SuppliersPage> {
                       right: Dimension.width12,
                     ),
                     height: Dimension.height20 * 2.1,
-                    //  width: double.infinity,
-                    //color: Colors.red,
                     decoration: BoxDecoration(
                       color: Color(0x1e767680),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: TextField(
+                      controller: _searchController,
+                      onChanged: (value) {
+                        // Directly call the filterSuppliers method from SuppliersController
+                        suppliersController.filterSuppliers(value);
+                      },
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.search),
                         prefixIconColor: Color(0xff5f5a5a),
@@ -80,41 +90,29 @@ class _SuppliersPageState extends State<SuppliersPage> {
             ),
             Expanded(
               child: Container(
-                height: Dimension.screenHeight,
-                width: Dimension.screenWidth,
-                //color: Colors.greenAccent,
                 margin: EdgeInsets.fromLTRB(Dimension.height10,
                     Dimension.height10, Dimension.height10, Dimension.height10),
                 child: GetBuilder<SuppliersController>(
-                  builder: (suppliersController) {
-                    return suppliersController.sListIsLoaded
+                  builder: (controller) {
+                    return controller.sListIsLoaded
                         ? ListView.builder(
-                            itemCount:
-                                suppliersController.suppliersList.length > 1
-                                    ? suppliersController.suppliersList.length
-                                    : 1,
+                            itemCount: controller.suppliersList.length,
                             itemBuilder: (context, index) {
+                              var supplier = controller.suppliersList[index];
                               return GestureDetector(
                                 onTap: () async {
-                                  await Get.find<SuppliersController>()
-                                      .getSupplierDetails(suppliersController
-                                          .suppliersList[index].id);
-
+                                  await controller
+                                      .getSupplierDetails(supplier.id);
                                   Get.toNamed(routeHelper.getSupplier(index));
                                 },
                                 child: SupplierItem(
-                                  title: suppliersController
-                                      .suppliersList[index].name!,
-                                  subtitle: suppliersController
-                                      .suppliersList[index].category!,
-                                  imagePath: suppliersController
-                                      .suppliersList[index].companyImage!,
-                                  email: suppliersController
-                                      .suppliersList[index].email!,
+                                  title: supplier.name,
+                                  subtitle: supplier.category,
+                                  imagePath: supplier.companyImage,
+                                  email: supplier.email,
                                 ),
                               );
                             },
-                            // crossAxisAlignment: CrossAxisAlignment.start,
                           )
                         : Center(
                             child: CircularProgressIndicator(

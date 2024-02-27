@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:trademale/conrtollers/watchList_controller.dart';
 import 'package:trademale/utilities/dimensions.dart';
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
+  final int id;
   final String title;
   final String subtitle;
   final String imagePath;
@@ -9,12 +13,20 @@ class ProductItem extends StatelessWidget {
   final int sellPrice;
 
   ProductItem({
+    required this.id,
     required this.title,
     required this.subtitle,
     required this.imagePath,
     required this.buyPrice,
     required this.sellPrice,
   });
+
+  @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -33,12 +45,12 @@ class ProductItem extends StatelessWidget {
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(0),
-                topRight: Radius.circular(0),
+                topLeft: Radius.circular(5),
+                topRight: Radius.circular(5),
               ),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(imagePath),
+                image: AssetImage(widget.imagePath),
               ),
             ),
           ),
@@ -59,22 +71,32 @@ class ProductItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        title,
+                        widget.title,
                         style: TextStyle(
+                          fontFamily: 'Schyler',
                           fontSize: Dimension.font12 * 1.4,
                           fontWeight: FontWeight.w900,
                           letterSpacing: Dimension.width5 / 3,
                           color: Color(0xff161616),
                         ),
                       ),
-                      Icon(
-                        Icons.favorite_border,
-                        color: Color(0xffe5989b),
+                      GestureDetector(
+                        child: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: Color(0xffe5989b),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            isFavorite = !isFavorite;
+                            Get.find<WatchListController>()
+                                .addToWatchList(widget.id);
+                          });
+                        },
                       ),
                     ],
                   ),
                   Text(
-                    subtitle,
+                    widget.subtitle,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontWeight: FontWeight.w300,
@@ -85,14 +107,14 @@ class ProductItem extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '\$ ${buyPrice.toString()}',
+                        '\$ ${widget.buyPrice.toString()}',
                         style: TextStyle(
                           color: Color(0xffe5989b),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       Text(
-                        '\$ ${sellPrice.toString()}',
+                        '\$ ${widget.sellPrice.toString()}',
                         style: TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.w500,

@@ -1,10 +1,13 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:trademale/utilities/dimensions.dart';
 import 'package:trademale/utilities/routeHelper.dart';
-import 'package:trademale/widgets/app_icon.dart';
 import 'package:trademale/widgets/profileTap.dart';
+
+import '../../utilities/constants.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,26 +22,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          margin: EdgeInsets.fromLTRB(Dimension.height10, Dimension.height10,
-              Dimension.height10, Dimension.height10),
+          margin: EdgeInsets.all(Dimension.height10),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      Get.toNamed(routeHelper.getInitial());
-                    },
-                    child: AppIcon(
-                        backgroundColor: Colors.transparent,
-                        iconColor: Color(0xff6d6875),
-                        icon: Icons.arrow_back_ios_new_rounded),
-                  ),
-                  SizedBox(
-                    width: Dimension.width50 * 2.2,
-                  ),
                   Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -62,6 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 'Noor Alden',
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
+                    fontFamily: 'Schyler',
                     fontSize: Dimension.font26 * 1.2,
                     color: Color(0xff6d6875),
                     letterSpacing: 2),
@@ -70,12 +62,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 'nooraldenberkdar80@gmail.com',
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
-                    fontSize: Dimension.font20,
+                    fontSize: Dimension.font12 * 1.3,
                     color: Color(0xff6d6875),
                     letterSpacing: 1),
               ),
               SizedBox(
-                height: Dimension.height50,
+                height: Dimension.height20,
               ),
               Expanded(
                 child: SingleChildScrollView(
@@ -128,7 +120,26 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          AwesomeDialog(
+                            context: context,
+                            dialogType: DialogType.question,
+                            animType: AnimType.topSlide,
+                            showCloseIcon: false,
+                            title: "Hey!!",
+                            desc: "Ary you sure you want to logout?",
+                            btnOkText: "yes",
+                            btnCancelText: "No",
+                            btnOkOnPress: () async {
+                              Box box = await Hive.openBox('myBox');
+                              print(box.get(kToken));
+                              await box.delete(kToken);
+                              Get.offAllNamed(routeHelper.getSignIn());
+                              print(box.get(kToken));
+                            },
+                            btnCancelOnPress: () {},
+                          ).show();
+                        },
                         child: ProfileTap(
                           name: 'Log out',
                         ),

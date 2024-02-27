@@ -35,6 +35,7 @@ class TabBarButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
+            fontFamily: 'Schyler',
             color: backgroundColor == Color(0xffe5989b)
                 ? Colors.white
                 : Color(0xffe5989b),

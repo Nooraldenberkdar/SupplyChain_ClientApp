@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:trademale/utilities/dimensions.dart';
 
 class OrderHistoryItem extends StatelessWidget {
-  const OrderHistoryItem(
-      {super.key,
-      required this.date,
-      required this.name,
-      required this.address,
-      required this.number,
-      required this.image});
+  const OrderHistoryItem({
+    super.key,
+    required this.orderId,
+    required this.created_at,
+    required this.client_id,
+    required this.supplier,
+    required this.total,
+    required this.Expected_delivery_date,
+    required this.status,
+  });
 
-  final String date;
-  final String name;
-  final String address;
-  final String number;
-  final String image;
+  final int orderId;
+  final String created_at;
+  final int client_id;
+  final String supplier;
+  final int total;
+  final String? Expected_delivery_date;
+  final String? status;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +35,7 @@ class OrderHistoryItem extends StatelessWidget {
         color: Color(0x26e57b7f),
         borderRadius: BorderRadius.circular(15),
       ),
-      height: Dimension.height50 * 3,
+      height: Dimension.height50 * 3.5,
       width: double.infinity,
       // color: Colors.red,
       child: Row(
@@ -40,18 +45,54 @@ class OrderHistoryItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  date,
+                  "created_at:\n${created_at.substring(0, created_at.indexOf('.'))}",
                   style: TextStyle(
-                      fontWeight: FontWeight.w800,
-                      fontSize: Dimension.font20,
+                      fontFamily: 'Schyler',
+                      fontWeight: FontWeight.w400,
+                      fontSize: Dimension.font12 * 1.4,
                       color: Color(0xff6d6875)),
                 ),
-                SizedBox(
-                  height: Dimension.height30,
+                Text(
+                  "client id:  ${client_id}",
+                  style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontFamily: 'Schyler',
+                      color: Color(0xff6d6875),
+                      fontWeight: FontWeight.w400,
+                      fontSize: Dimension.font12 * 1.4),
                 ),
                 Text(
-                  '$name\n$address\n$number',
+                  "supplier:  ${supplier}",
                   style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontFamily: 'Schyler',
+                      color: Color(0xff6d6875),
+                      fontWeight: FontWeight.w400,
+                      fontSize: Dimension.font12 * 1.4),
+                ),
+                Text(
+                  "total:  ${total}",
+                  style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontFamily: 'Schyler',
+                      color: Color(0xff6d6875),
+                      fontWeight: FontWeight.w400,
+                      fontSize: Dimension.font12 * 1.4),
+                ),
+                Text(
+                  "Expected delivery date:  ${Expected_delivery_date}",
+                  style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontFamily: 'Schyler',
+                      color: Color(0xff6d6875),
+                      fontWeight: FontWeight.w400,
+                      fontSize: Dimension.font12 * 1.4),
+                ),
+                Text(
+                  "status:  ${status}",
+                  style: TextStyle(
+                      overflow: TextOverflow.ellipsis,
+                      fontFamily: 'Schyler',
                       color: Color(0xff6d6875),
                       fontWeight: FontWeight.w400,
                       fontSize: Dimension.font12 * 1.4),
@@ -68,7 +109,7 @@ class OrderHistoryItem extends StatelessWidget {
               color: Colors.black,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(image),
+                image: AssetImage('assets/images/cart.jpg'),
               ),
             ),
             width: Dimension.width50 * 2.5,

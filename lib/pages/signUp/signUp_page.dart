@@ -276,7 +276,13 @@ class _SignUpPageState extends State<SignUpPage> {
                                     isPasswordValid &&
                                     isUsernameValid &&
                                     agree) {
-                                  print('correct');
+                                  Get.toNamed(routeHelper.getDeliveryAddress(),
+                                      arguments: {
+                                        'email': emailController.text.trim(),
+                                        'username': usernameController.text,
+                                        'password':
+                                            passwordController.text.trim(),
+                                      });
                                 } else
                                   AwesomeDialog(
                                     context: context,
@@ -304,7 +310,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   Expanded(
-                                    child: Text('Sign Up',
+                                    child: Text('NEXT',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             letterSpacing: 0.8,

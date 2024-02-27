@@ -70,6 +70,7 @@ class ProductItemSupplierPage extends StatelessWidget {
                         Text(
                           title,
                           style: TextStyle(
+                            fontFamily: 'Schyler',
                             fontSize: Dimension.font12 * 1.7,
                             fontWeight: FontWeight.w900,
                             letterSpacing: Dimension.width5 / 3,
@@ -77,7 +78,7 @@ class ProductItemSupplierPage extends StatelessWidget {
                           ),
                         ),
                         Icon(
-                          Icons.add,
+                          Icons.favorite_border,
                           color: Color(0xffe5989b),
                         ),
                       ],

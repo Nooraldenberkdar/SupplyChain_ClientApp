@@ -26,6 +26,6 @@ const String kGetSuppliers = "/api/suppliers";
 // const String kUploadsRestaurants = "/images/restaurants/";
 // const String kUploadsMeals = "/images/meals/";
 //
-// const String kToken = "DBToken";
+const String kToken = "DBToken";
 // const String kAddressId = "DBId";
 // const String kCart_List = "cart-List";

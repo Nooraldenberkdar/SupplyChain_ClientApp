@@ -56,8 +56,9 @@ class _CartPageState extends State<CartPage> {
                   Text(
                     'My Cart',
                     style: TextStyle(
+                        fontFamily: 'Schyler',
                         fontWeight: FontWeight.w400,
-                        fontSize: Dimension.font20,
+                        fontSize: Dimension.font26,
                         color: Color(0xff5f5a5a),
                         letterSpacing: 2),
                   ),
@@ -72,25 +73,31 @@ class _CartPageState extends State<CartPage> {
                             color: Color(0xff5f5a5a),
                           ),
                         ),
-                        if (true)
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: Container(
-                              padding: EdgeInsets.all(2),
-                              decoration: BoxDecoration(
-                                color: Color(0xffe5989b),
-                                shape: BoxShape.circle,
-                              ),
-                              child: Text(
-                                '1',
-                                // Replace with the actual count of items in the cart
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
+                        GetBuilder<CartController>(
+                          builder: (cartController) {
+                            return cartController.getItems.length > 0
+                                ? Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: Container(
+                                      padding: EdgeInsets.all(2),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xffe5989b),
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        cartController.getItems.length
+                                            .toString(),
+                                        // Replace with the actual count of items in the cart
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox.shrink();
+                          },
+                        )
                       ],
                     ),
                   )
@@ -151,112 +158,131 @@ class _CartPageState extends State<CartPage> {
               SizedBox(
                 height: Dimension.height10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Sub Total',
-                    style: TextStyle(
-                      fontSize: Dimension.font12 * 1.2,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                  Text(
-                    '\$ 200',
-                    style: TextStyle(
-                      fontSize: Dimension.font12 * 1.2,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Delivery fee',
-                    style: TextStyle(
-                      height: 2.3,
-                      fontSize: Dimension.font12 * 1.2,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                  Text(
-                    '\$ 200',
-                    style: TextStyle(
-                      fontSize: Dimension.font12 * 1.2,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Discount',
-                    style: TextStyle(
-                      fontSize: Dimension.font12 * 1.2,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                  Text(
-                    '\$ 200',
-                    style: TextStyle(
-                      fontSize: Dimension.font12 * 1.2,
-                      fontWeight: FontWeight.w400,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    'Total',
-                    style: TextStyle(
-                      letterSpacing: 2,
-                      height: 3,
-                      fontSize: Dimension.font20,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                  Text(
-                    '\$ 200',
-                    style: TextStyle(
-                      fontSize: Dimension.font20,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xff6d6875),
-                    ),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xffb5838d), // Background color
-                  foregroundColor: Colors.white, // Text color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                        Dimension.radius15), // Border radius
-                    // Border color
-                  ),
-                ),
-                child: Text(
-                  'Check Out',
-                  style: TextStyle(
-                    fontSize: Dimension.font20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+              GetBuilder<CartController>(
+                builder: (cartController) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Sub Total',
+                            style: TextStyle(
+                              fontSize: Dimension.font12 * 1.2,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                          Text(
+                            '\$ ${cartController.totalAmount}',
+                            style: TextStyle(
+                              fontSize: Dimension.font12 * 1.2,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Delivery fee',
+                            style: TextStyle(
+                              height: 2.3,
+                              fontSize: Dimension.font12 * 1.2,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                          Text(
+                            '\$ 0',
+                            style: TextStyle(
+                              fontSize: Dimension.font12 * 1.2,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Discount',
+                            style: TextStyle(
+                              fontSize: Dimension.font12 * 1.2,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                          Text(
+                            '0%',
+                            style: TextStyle(
+                              fontSize: Dimension.font12 * 1.2,
+                              fontWeight: FontWeight.w400,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Total',
+                            style: TextStyle(
+                              letterSpacing: 2,
+                              height: 3,
+                              fontSize: Dimension.font20,
+                              fontWeight: FontWeight.w900,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                          Text(
+                            cartController.totalAmount == 0
+                                ? '\$ 0'
+                                //: '\$ ${(cartController.totalAmount + 7) - (cartController.totalAmount * 0.05)}',
+                                : '\$ ${cartController.totalAmount}',
+                            style: TextStyle(
+                              fontSize: Dimension.font20,
+                              fontWeight: FontWeight.w900,
+                              color: Color(0xff6d6875),
+                            ),
+                          ),
+                        ],
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (cartController.totalAmount > 0) {
+                            cartController.checkOut();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: cartController.totalAmount == 0
+                              ? Colors.grey
+                              : Color(0xffb5838d),
+                          // Background color
+                          foregroundColor: Colors.white,
+                          // Text color
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                Dimension.radius15), // Border radius
+                            // Border color
+                          ),
+                        ),
+                        child: Text(
+                          'Check Out',
+                          style: TextStyle(
+                            fontSize: Dimension.font20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              )
             ],
           ),
         ),

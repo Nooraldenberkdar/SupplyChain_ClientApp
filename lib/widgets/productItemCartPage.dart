@@ -94,7 +94,7 @@ class ProductItemCartPage extends StatelessWidget {
                       height: Dimension.height5,
                     ),
                     Text(
-                      subtitle,
+                      "${subtitle.substring(0, subtitle.indexOf('.'))}",
                       style: TextStyle(
                         fontWeight: FontWeight.w300,
                         color: Color(0xff6d6875),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
+import 'package:trademale/conrtollers/history_controller.dart';
+import 'package:trademale/conrtollers/suppliers_controller.dart';
 import 'package:trademale/utilities/dimensions.dart';
 import 'package:trademale/utilities/routeHelper.dart';
 import 'package:trademale/widgets/orderHistoryItem.dart';
@@ -58,7 +59,7 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage>
                 children: [
                   GestureDetector(
                     onTap: () {
-                      Get.toNamed(routeHelper.getProfile());
+                      Get.offAllNamed(routeHelper.getHead("0"));
                     },
                     child: AppIcon(
                         backgroundColor: Colors.transparent,
@@ -71,7 +72,8 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage>
                   Text(
                     'Order History',
                     style: TextStyle(
-                      fontSize: Dimension.font20,
+                      fontFamily: 'Schyler',
+                      fontSize: Dimension.font26,
                       fontWeight: FontWeight.w800,
                       color: Color(0xff5f5a5a),
                     ),
@@ -83,7 +85,6 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage>
               ),
               Expanded(
                 child: Container(
-                  //color: Colors.yellow,
                   child: DefaultTabController(
                     length: 3,
                     child: Column(
@@ -93,58 +94,175 @@ class _OrdersHistoryPageState extends State<OrdersHistoryPage>
                             controller: _tabController,
                             tabs: tabs = [
                               TabBarButton(
-                                text: 'All',
-                                width: Dimension.width50 * 1.5,
+                                text: 'Canceled',
+                                width: Dimension.width50 * 2,
                                 height: Dimension.height20 * 2,
                                 backgroundColor: activeTabIndex == 0
                                     ? Color(0xffe5989b)
                                     : Colors.white,
                               ),
                               TabBarButton(
-                                text: 'Done',
-                                width: Dimension.width50 * 1.5,
+                                text: 'Pending',
+                                width: Dimension.width50 * 2,
                                 height: Dimension.height20 * 2,
                                 backgroundColor: activeTabIndex == 1
                                     ? Color(0xffe5989b)
                                     : Colors.white,
                               ),
                               TabBarButton(
-                                text: 'Cancel',
-                                width: Dimension.width50 * 1.5,
+                                text: 'Accepted',
+                                width: Dimension.width50 * 2,
                                 height: Dimension.height20 * 2,
                                 backgroundColor: activeTabIndex == 2
                                     ? Color(0xffe5989b)
                                     : Colors.white,
                               )
                             ]),
-                        Expanded(
-                          child: TabBarView(
-                            controller: _tabController,
-                            children: [
-                              ListView.builder(
-                                itemCount: 10,
-                                itemBuilder: (context, index) {
-                                  // Use index to access each item in your data list
-                                  return OrderHistoryItem(
-                                    date: '20/11/2019,12:10 AM',
-                                    name: 'Noor Alden',
-                                    address: 'Damascus',
-                                    number: '+963936553239',
-                                    image: 'assets/images/ph1.png',
-                                  );
-                                },
-                              ),
-                              Container(
-                                color: Colors.red,
-                                child: Icon(Icons.search),
-                              ),
-                              Container(
-                                color: Colors.yellow,
-                                child: Icon(Icons.settings),
-                              ),
-                            ],
-                          ),
-                        ),
+                        Expanded(child: GetBuilder<HistoryController>(
+                          builder: (historyController) {
+                            return TabBarView(
+                              controller: _tabController,
+                              children: [
+                                RefreshIndicator(
+                                  onRefresh: () async {
+                                    return await historyController
+                                        .getHistoryList();
+                                  },
+                                  child: ListView.builder(
+                                    itemCount:
+                                        historyController.historyList.length > 1
+                                            ? historyController
+                                                .historyList.length
+                                            : 1,
+                                    itemBuilder: (context, index) {
+                                      // Use index to access each item in your data list
+
+                                      return historyController
+                                                  .historyList[index].status ==
+                                              'cancel'
+                                          ? OrderHistoryItem(
+                                              orderId: historyController
+                                                  .historyList[index].id,
+                                              created_at: historyController
+                                                  .historyList[index]
+                                                  .created_at,
+                                              client_id: historyController
+                                                  .historyList[index].client_id,
+                                              supplier: Get.find<
+                                                          SuppliersController>()
+                                                      .findSupplierById(
+                                                          historyController
+                                                              .historyList[
+                                                                  index]
+                                                              .supplier_id) ??
+                                                  '',
+                                              Expected_delivery_date:
+                                                  historyController
+                                                          .historyList[index]
+                                                          .Expected_delivery_date ??
+                                                      '',
+                                              status: historyController
+                                                  .historyList[index].status,
+                                              total: historyController
+                                                  .historyList[index].total,
+                                            )
+                                          : Container();
+                                    },
+                                  ),
+                                ),
+                                RefreshIndicator(
+                                  onRefresh: () async {
+                                    return await historyController
+                                        .getHistoryList();
+                                  },
+                                  child: ListView.builder(
+                                    itemCount:
+                                        historyController.historyList.length,
+                                    itemBuilder: (context, index) {
+                                      // Use index to access each item in your data list
+                                      return historyController
+                                                  .historyList[index].status ==
+                                              'pending'
+                                          ? OrderHistoryItem(
+                                              orderId: historyController
+                                                  .historyList[index].id,
+                                              created_at: historyController
+                                                  .historyList[index]
+                                                  .created_at,
+                                              client_id: historyController
+                                                  .historyList[index].client_id,
+                                              supplier: Get.find<
+                                                          SuppliersController>()
+                                                      .findSupplierById(
+                                                          historyController
+                                                              .historyList[
+                                                                  index]
+                                                              .supplier_id) ??
+                                                  '',
+                                              Expected_delivery_date:
+                                                  historyController
+                                                          .historyList[index]
+                                                          .Expected_delivery_date ??
+                                                      '',
+                                              status: historyController
+                                                  .historyList[index].status,
+                                              total: historyController
+                                                  .historyList[index].total,
+                                            )
+                                          : Container();
+                                    },
+                                  ),
+                                ),
+                                RefreshIndicator(
+                                  onRefresh: () async {
+                                    return await historyController
+                                        .getHistoryList();
+                                  },
+                                  child: ListView.builder(
+                                    itemCount:
+                                        historyController.historyList.length > 1
+                                            ? historyController
+                                                .historyList.length
+                                            : 1,
+                                    itemBuilder: (context, index) {
+                                      // Use index to access each item in your data list
+                                      return historyController
+                                                  .historyList[index].status ==
+                                              "accept"
+                                          ? OrderHistoryItem(
+                                              orderId: historyController
+                                                  .historyList[index].id,
+                                              created_at: historyController
+                                                  .historyList[index]
+                                                  .created_at,
+                                              client_id: historyController
+                                                  .historyList[index].client_id,
+                                              supplier: Get.find<
+                                                          SuppliersController>()
+                                                      .findSupplierById(
+                                                          historyController
+                                                              .historyList[
+                                                                  index]
+                                                              .supplier_id) ??
+                                                  '',
+                                              Expected_delivery_date:
+                                                  historyController
+                                                          .historyList[index]
+                                                          .Expected_delivery_date ??
+                                                      '',
+                                              status: historyController
+                                                  .historyList[index].status,
+                                              total: historyController
+                                                  .historyList[index].total,
+                                            )
+                                          : Container();
+                                    },
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        )),
                       ],
                     ),
                   ),

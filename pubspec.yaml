@@ -15,6 +15,11 @@ dependencies:
   get: ^4.6.6
   awesome_dialog: ^3.1.0
   expandable_text: ^2.3.0
+  hive_flutter: ^1.1.0
+  path_provider: ^2.1.2
+  lottie: ^2.7.0
+  persistent_bottom_nav_bar: ^5.0.2
+
 
 dev_dependencies:
   flutter_test:
@@ -24,12 +29,14 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  assets:
-     - assets/images/
 
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+  assets:
+    - assets/images/
+    - assets/animations/Animation - 1708433147163.json
+
+  fonts:
+    - family: Schyler
+      fonts:
+        - asset: assets/fonts/Anta-Regular.ttf
+        # - asset: assets/fonts/Schyler-Italic.ttf
+        #   style: italic

@@ -12,8 +12,13 @@ class ProductsController extends GetxController {
   ProductsController({required this.productsRepo});
 
   List<ProductModel> _productsList = [];
+  List<ProductModel> _filteredProductsList =
+      []; // Added for search functionality
 
-  List<ProductModel> get productsList => _productsList;
+  List<ProductModel> get productsList =>
+      _filteredProductsList.isNotEmpty ? _filteredProductsList : _productsList;
+
+  List<ProductModel> get watchListUseOnly => _productsList;
 
   bool _pListIsLoaded = false;
 
@@ -27,6 +32,7 @@ class ProductsController extends GetxController {
   int quantity = 0;
 
   int _inCartItems = 0;
+
   int get inCartItems => _inCartItems + quantity;
 
   late CartController cartController;
@@ -130,5 +136,17 @@ class ProductsController extends GetxController {
   void clearCart() {
     cartController.clearCart();
     update();
+  }
+
+  void filterProducts(String query) {
+    if (query.isEmpty) {
+      _filteredProductsList = [];
+    } else {
+      _filteredProductsList = _productsList.where((product) {
+        return product.name!.toLowerCase().contains(query.toLowerCase()) ||
+            product.description!.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    }
+    update(); // Update the UI with the search results
   }
 }

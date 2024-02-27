@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:trademale/HeadPage.dart';
 import 'package:trademale/pages/cart/cart_page.dart';
 import 'package:trademale/pages/cart/ordersHistory_page.dart';
 import 'package:trademale/pages/home/home_page.dart';
@@ -6,15 +7,18 @@ import 'package:trademale/pages/onBoarding/gettingStarted_page.dart';
 import 'package:trademale/pages/profile/profile.dart';
 import 'package:trademale/pages/signIn/signIn_page.dart';
 import 'package:trademale/pages/signUp/deliveryAddress_page.dart';
-import 'package:trademale/pages/signUp/signUp1_page.dart';
+import 'package:trademale/pages/signUp/signUp_page.dart';
+import 'package:trademale/pages/watchList/watchListPage.dart';
 
 import '../pages/home/suppliers/product_page.dart';
 import '../pages/home/suppliers/supplier_page.dart';
 import '../pages/home/suppliers/suppliers_page.dart';
+import '../pages/onBoarding/splash_page.dart';
 
 //main senario: when you get.toNamed(some fun) this fun returns a path that getx know it in getPage list .
 class routeHelper {
-  // static String splash = '/splash-page';
+  static String splash = '/splash-page';
+  static String head = '/head_page';
   static String getstarted = '/getStarted';
   static String initial = '/';
   static String signUp = '/signUpPage';
@@ -26,8 +30,11 @@ class routeHelper {
   static String cart = '/cartPage';
   static String profile = '/profilePage';
   static String history = '/historyPage';
+  static String watchList = '/watchListPage';
 
-  // static String getSplash() => splash;
+  static String getSplash() => splash;
+
+  static String getHead(String oldPage) => '$head?oldPage=$oldPage';
 
   static String getStarted() => getstarted;
 
@@ -54,14 +61,26 @@ class routeHelper {
 
   static String getHistory() => history;
 
+  static String getWatchList() => watchList;
+
   static List<GetPage> routes = [
-    // GetPage(
-    //   name: splash,
-    //   page: () => SplashScreen(),
-    // ),
     GetPage(
+      name: splash,
+      page: () => SplashPage(),
+    ),
+    GetPage(
+      transition: Transition.fadeIn,
       name: getstarted,
       page: () => GetStartedPage(),
+    ),
+    GetPage(
+      name: head,
+      page: () {
+        var oldPage = Get.parameters['oldPage'];
+        return HeadPage(
+          oldPage: oldPage!,
+        );
+      },
     ),
     GetPage(
       transition: Transition.fadeIn,
@@ -112,16 +131,24 @@ class routeHelper {
       },
     ),
     GetPage(
+      transition: Transition.fadeIn,
       name: cart,
       page: () => CartPage(),
     ),
     GetPage(
+      transition: Transition.fadeIn,
       name: profile,
       page: () => ProfilePage(),
     ),
     GetPage(
+      transition: Transition.fadeIn,
       name: history,
       page: () => OrdersHistoryPage(),
+    ),
+    GetPage(
+      transition: Transition.fadeIn,
+      name: watchList,
+      page: () => WatchListPage(),
     ),
   ];
 }
