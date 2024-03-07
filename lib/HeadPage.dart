@@ -1,10 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:trademale/conrtollers/Products_controller.dart';
+import 'package:trademale/conrtollers/history_controller.dart';
+import 'package:trademale/conrtollers/signUp_controller.dart';
+import 'package:trademale/conrtollers/suppliers_controller.dart';
+import 'package:trademale/conrtollers/watchList_controller.dart';
+import 'package:trademale/data/repository/signIn_repo.dart';
 import 'package:trademale/pages/cart/ordersHistory_page.dart';
 import 'package:trademale/pages/home/home_page.dart';
 import 'package:trademale/pages/home/suppliers/suppliers_page.dart';
 import 'package:trademale/pages/watchList/watchListPage.dart';
+import 'package:trademale/utilities/constants.dart';
+
+import 'conrtollers/cart_controller.dart';
+import 'conrtollers/signIn_controller.dart';
 
 class HeadPage extends StatefulWidget {
   final String? oldPage;
@@ -20,11 +32,20 @@ class _HomePageState extends State<HeadPage> {
   late PersistentTabController _controller;
 
   @override
-  void initState() {
+  initState() {
     // TODO: implement initState
     super.initState();
+    initializeApp();
     _controller =
         PersistentTabController(initialIndex: int.parse(widget.oldPage!));
+  }
+
+  Future<void> initializeApp() async {
+    Box box = await Hive.openBox('myBox');
+    String? token = await box.get(kToken);
+    if (token != null) {
+      Get.find<SignInRepo>().saveUserToken(token);
+    }
   }
 
   List<Widget> _buildScreens() {
@@ -67,6 +88,13 @@ class _HomePageState extends State<HeadPage> {
 
   @override
   Widget build(BuildContext context) {
+    Get.find<ProductsController>().getProductsList();
+    Get.find<SuppliersController>().getSuppliersList();
+    Get.find<CartController>();
+    Get.find<SignUpController>();
+    Get.find<SignInController>();
+    Get.find<HistoryController>().getHistoryList();
+    Get.find<WatchListController>().getWatchList();
     return Scaffold(
       body: SafeArea(
         child: Column(

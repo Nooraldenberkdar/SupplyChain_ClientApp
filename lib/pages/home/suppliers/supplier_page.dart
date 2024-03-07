@@ -43,8 +43,12 @@ class _SupplierPageState extends State<SupplierPage> {
                     height: Dimension.height50 * 4,
                     decoration: BoxDecoration(
                       image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: NetworkImage(supplier.companyImage),
+                        fit: BoxFit.fill,
+                        image: supplier.companyImage == null
+                            ? AssetImage('assets/images/cart.jpg')
+                            : NetworkImage(
+                                    "http://10.0.2.2:8000${supplier.companyImage}")
+                                as ImageProvider,
                       ),
                     ),
                   ),
@@ -183,15 +187,19 @@ class _SupplierPageState extends State<SupplierPage> {
                                     Get.toNamed(routeHelper.getProductDetails(
                                         index, "supplier",
                                         supplierId: widget.pageId));
-                                    print(
-                                        "index ${index} supplierId${widget.pageId}");
                                   },
                                   child: ProductItemSupplierPage(
                                     title: supplier.products[index].name,
                                     description:
                                         supplier.products[index].categoryId ??
                                             "All",
-                                    imagePath: 'assets/images/ph2.png',
+                                    imagePath: supplier
+                                                .products[index].imageUrl ==
+                                            null
+                                        ? AssetImage('assets/images/cart.jpg')
+                                        : NetworkImage(
+                                                "http://10.0.2.2:8000/${supplier.products[index].imageUrl}")
+                                            as ImageProvider,
                                     price: supplier.products[index].price ?? 0,
                                     pPrice:
                                         supplier.products[index].pPrice ?? 0,

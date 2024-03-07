@@ -7,7 +7,7 @@ class SupplierItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final String email;
-  final String imagePath;
+  final ImageProvider imagePath;
 
   SupplierItem({
     required this.title,
@@ -40,7 +40,7 @@ class SupplierItem extends StatelessWidget {
               //color: Colors.yellow,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: NetworkImage(imagePath),
+                image: imagePath,
               ),
             ),
           ),

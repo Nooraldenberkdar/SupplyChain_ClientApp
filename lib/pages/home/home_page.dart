@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage>
                 height: Dimension.height10,
               ),
               Text(
-                'Welcome,Noor',
+                'Welcome,Target',
                 style: TextStyle(
                     fontFamily: 'Schyler',
                     fontWeight: FontWeight.w500,
@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage>
                           controller: _tabController,
                           tabs: tabs = [
                             TabBarButton(
-                              text: 'Electronics',
+                              text: 'All',
                               width: Dimension.width50 * 3,
                               height: Dimension.height20 * 2,
                               backgroundColor: activeTabIndex == 0
@@ -192,7 +192,7 @@ class _HomePageState extends State<HomePage>
                                   : Colors.white,
                             ),
                             TabBarButton(
-                              text: 'Cloths',
+                              text: 'Electronics',
                               width: Dimension.width50 * 3,
                               height: Dimension.height20 * 2,
                               backgroundColor: activeTabIndex == 1
@@ -253,8 +253,16 @@ class _HomePageState extends State<HomePage>
                                                   subtitle: products
                                                       .productsList[index]
                                                       .description!,
-                                                  imagePath:
-                                                      'assets/images/ph2.png',
+                                                  imagePath: products
+                                                              .productsList[
+                                                                  index]
+                                                              .imageUrl !=
+                                                          null
+                                                      ? NetworkImage(
+                                                          "http://10.0.2.2:8000/${products.productsList[index].imageUrl!}")
+                                                      : AssetImage(
+                                                              'assets/images/cart.jpg')
+                                                          as ImageProvider,
                                                   buyPrice: products
                                                       .productsList[index]
                                                       .price!,

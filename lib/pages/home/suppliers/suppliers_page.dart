@@ -108,7 +108,11 @@ class _SuppliersPageState extends State<SuppliersPage> {
                                 child: SupplierItem(
                                   title: supplier.name,
                                   subtitle: supplier.category,
-                                  imagePath: supplier.companyImage,
+                                  imagePath: supplier.companyImage == null
+                                      ? AssetImage('assets/images/ph1.png')
+                                      : NetworkImage(
+                                              "http://10.0.2.2:8000${supplier.companyImage}")
+                                          as ImageProvider,
                                   email: supplier.email,
                                 ),
                               );

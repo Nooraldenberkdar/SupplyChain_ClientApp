@@ -5,7 +5,7 @@ class ProductItemCartPage extends StatelessWidget {
   final String title;
   final String subtitle;
   final String price;
-  final String imagePath;
+  final ImageProvider imagePath;
   final int quantity; // New field for quantity
   final VoidCallback onAdd; // Callback when quantity is incremented
   final VoidCallback onRemove; // Callback when quantity is decremented
@@ -46,7 +46,7 @@ class ProductItemCartPage extends StatelessWidget {
               //color: Colors.yellow,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(imagePath),
+                image: imagePath,
               ),
             ),
           ),

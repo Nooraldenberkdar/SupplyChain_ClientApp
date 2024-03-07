@@ -50,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: Dimension.height20,
               ),
               Text(
-                'Noor Alden',
+                'Target',
                 style: TextStyle(
                     fontWeight: FontWeight.w900,
                     fontFamily: 'Schyler',
@@ -59,7 +59,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     letterSpacing: 2),
               ),
               Text(
-                'nooraldenberkdar80@gmail.com',
+                'target@gmail.com',
                 style: TextStyle(
                     fontWeight: FontWeight.w400,
                     fontSize: Dimension.font12 * 1.3,
@@ -73,14 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          Get.toNamed(routeHelper.getHistory());
-                        },
-                        child: ProfileTap(
-                          name: 'Orders History',
-                        ),
-                      ),
                       GestureDetector(
                         onTap: () {
                           Get.toNamed(routeHelper.getDeliveryAddress());

@@ -26,8 +26,8 @@ class _SplashPageState extends State<SplashPage> {
       Duration(seconds: 4),
       () async {
         Box box = await Hive.openBox('myBox');
-        String? x = await box.get(kToken);
-        if (x != null) {
+        String? token = await box.get(kToken);
+        if (token != null) {
           Get.offAllNamed(routeHelper.getHead("0"));
         } else {
           Get.offAllNamed(routeHelper.getStarted());

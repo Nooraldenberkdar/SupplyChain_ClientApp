@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:trademale/conrtollers/watchList_controller.dart';
 import 'package:trademale/utilities/dimensions.dart';
 
@@ -8,7 +7,7 @@ class ProductItem extends StatefulWidget {
   final int id;
   final String title;
   final String subtitle;
-  final String imagePath;
+  final ImageProvider imagePath;
   final int buyPrice;
   final int sellPrice;
 
@@ -48,10 +47,8 @@ class _ProductItemState extends State<ProductItem> {
                 topLeft: Radius.circular(5),
                 topRight: Radius.circular(5),
               ),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage(widget.imagePath),
-              ),
+              image:
+                  DecorationImage(fit: BoxFit.cover, image: widget.imagePath),
             ),
           ),
           Align(
@@ -61,7 +58,7 @@ class _ProductItemState extends State<ProductItem> {
               padding: EdgeInsets.only(
                 left: Dimension.width10,
               ),
-              height: Dimension.height20 * 3.8,
+              height: Dimension.height20 * 5,
               width: double.infinity,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

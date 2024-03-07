@@ -6,7 +6,7 @@ import 'iconText_widget.dart';
 class ProductItemSupplierPage extends StatelessWidget {
   final String title;
   final String description;
-  final String imagePath;
+  final ImageProvider imagePath;
   final int price;
   final int pPrice;
 
@@ -41,7 +41,7 @@ class ProductItemSupplierPage extends StatelessWidget {
               //color: Colors.yellow,
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(imagePath),
+                image: imagePath,
               ),
             ),
           ),

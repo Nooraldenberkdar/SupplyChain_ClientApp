@@ -167,7 +167,11 @@ class ProductPage extends StatelessWidget {
                           ),
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage('assets/images/ph2.png'),
+                            image: product.imageUrl == null
+                                ? AssetImage('assets/images/cart.jpg')
+                                : NetworkImage(
+                                        "http://10.0.2.2:8000/${product.imageUrl}")
+                                    as ImageProvider,
                           ),
                         ),
                       ),
@@ -184,7 +188,6 @@ class ProductPage extends StatelessWidget {
                         ),
                         height: Dimension.height20 * 2,
                         width: Dimension.width50 * 2.2,
-                        //color: Colors.red,
                         child: GetBuilder<ProductsController>(
                           builder: (productsController) {
                             return Row(

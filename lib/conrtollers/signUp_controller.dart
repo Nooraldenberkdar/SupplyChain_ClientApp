@@ -12,11 +12,15 @@ class SignUpController extends GetxController implements GetxService {
   SignUpController({required this.signUpRepo});
 
   bool _isLoading = false;
+
   bool get isLoading => _isLoading;
 
   Future<ResponseModel> registeration(SignUpModel signUpModel) async {
     _isLoading = true;
     Response response = await signUpRepo.registeration(signUpModel);
+    print(signUpModel);
+    print("respoonse status is${response.statusCode}");
+    print("response is${response.body}");
     late ResponseModel responseModel;
     if (response.statusCode == 200 || response.statusCode == 201) {
       signUpRepo.saveUserToken(response.body["token"]);

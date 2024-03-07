@@ -43,7 +43,7 @@ class CartController extends GetxController {
           () {
             return CartModel(
               id: productModel.id,
-              img: 'assets/images/ph1.png',
+              img: productModel.imageUrl,
               name: productModel.name,
               price: productModel.price,
               quantity: quantity,
@@ -128,6 +128,8 @@ class CartController extends GetxController {
     OrderModel order = OrderModel(
         orders: orderItems, supplier_id: items[0].product?.supplierId ?? 0);
     Response response = await cartRepo.checkOut(order);
+    print(response.statusCode);
+    print(response.body);
     if (response.statusCode == 200 || response.statusCode == 201) {
       AwesomeDialog(
         context: Get.context!,

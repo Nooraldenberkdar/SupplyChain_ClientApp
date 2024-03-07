@@ -8,7 +8,7 @@ class ProductItemWatchList extends StatefulWidget {
   final int id;
   final String productName;
   final String supplierName;
-  final String imagePath;
+  final ImageProvider imagePath;
   final int buyPrice;
   final int sellPrice;
   final String updatedAt;
@@ -50,7 +50,7 @@ class _ProductItemWatchListState extends State<ProductItemWatchList> {
               ),
               image: DecorationImage(
                 fit: BoxFit.cover,
-                image: AssetImage(widget.imagePath),
+                image: widget.imagePath,
               ),
             ),
           ),

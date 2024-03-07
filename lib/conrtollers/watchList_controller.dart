@@ -39,6 +39,7 @@ class WatchListController extends GetxController {
 
   Future<void> removeWatchListItem(int productId) async {
     _productsList.remove(productId);
+    print("productsList is${_productsList}");
     await updateWatchList();
     _watchListIsLoaded = true;
     update();
@@ -48,6 +49,8 @@ class WatchListController extends GetxController {
     WatchListModel watchListModel = WatchListModel(productIds: _productsList);
     Response response =
         await watchListRepo.updateWatchList(watchListModel.toJson());
+    print("response status of post remove is${response.statusCode}");
+    print("response of post remove is ${response.body}");
     await watchListRepo.getWatchList();
     return response.statusCode == 200;
   }

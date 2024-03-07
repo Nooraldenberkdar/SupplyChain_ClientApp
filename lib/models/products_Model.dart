@@ -40,9 +40,8 @@ class ProductModel {
   String? categoryId;
   int? supplierId;
   int? price;
-  int?
-      pPrice; // Assuming p_price is an integer and represents a promotional or previous price
-  List<dynamic>? images; // Assuming images is a list of image URLs or objects
+  int? pPrice;
+  String? imageUrl; // Updated to store only the URL of the first image
 
   ProductModel({
     this.id,
@@ -55,7 +54,7 @@ class ProductModel {
     this.supplierId,
     this.price,
     this.pPrice,
-    this.images,
+    this.imageUrl,
   });
 
   ProductModel.fromJson(Map<String, dynamic> json) {
@@ -69,23 +68,30 @@ class ProductModel {
     supplierId = json['supplier_id'];
     price = json['price'];
     pPrice = json['p_price'];
-    images = json[
-        'images']; // Directly assigning the list, assuming it doesn't require further processing
+
+    // Check if the 'images' list is not empty and assign the URL of the first image
+    if (json['images'] != null && json['images'].isNotEmpty) {
+      imageUrl = json['images'][0]['image_url'];
+    } else {
+      imageUrl = null; // or a default image URL if necessary
+    }
   }
 
   Map<String, dynamic> toJson() {
-    return {
-      "id": id,
-      "created_at": createdAt?.toIso8601String(),
-      "updated_at": updatedAt?.toIso8601String(),
-      "name": name,
-      "description": description,
-      "quantity": quantity,
-      "category_id": categoryId,
-      "supplier_id": supplierId,
-      "price": price,
-      "p_price": pPrice,
-      "images": images, // Direct serialization of the list
-    };
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = id;
+    data['created_at'] = createdAt?.toIso8601String();
+    data['updated_at'] = updatedAt?.toIso8601String();
+    data['name'] = name;
+    data['description'] = description;
+    data['quantity'] = quantity;
+    data['category_id'] = categoryId;
+    data['supplier_id'] = supplierId;
+    data['price'] = price;
+    data['p_price'] = pPrice;
+    data['image_url'] =
+        imageUrl; // Ensure this matches how you want to output it
+
+    return data;
   }
 }

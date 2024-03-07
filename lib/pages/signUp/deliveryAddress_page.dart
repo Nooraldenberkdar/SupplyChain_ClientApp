@@ -284,7 +284,7 @@ class _DeliveryAddressPageState extends State<DeliveryAddressPage> {
                                           isStreetValid &&
                                           isPhoneValid) {
                                         registeration(signUpController);
-                                        Get.toNamed(routeHelper.getInitial());
+                                        Get.toNamed(routeHelper.getHead("0"));
                                       } else
                                         AwesomeDialog(
                                           context: context,

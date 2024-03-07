@@ -53,7 +53,7 @@ class SupplierModel {
     updatedAt = DateTime.tryParse(json['updated_at']);
     name = json['name'];
     email = json['email'];
-    emailVerifiedAt = DateTime.tryParse(json['email_verified_at']);
+    emailVerifiedAt = null; //DateTime.tryParse(json['email_verified_at'])!;
     commercialRegisterNumber = json['commercial_register_number'];
     phone = json['phone'];
     commercialRegisterImage = json['commercial_register_image'];

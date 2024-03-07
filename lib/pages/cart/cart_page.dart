@@ -118,7 +118,12 @@ class _CartPageState extends State<CartPage> {
                               subtitle: cartController.getItems[index].time!,
                               price:
                                   '\$ ${cartController.getItems[index].price}',
-                              imagePath: 'assets/images/ph2.png',
+                              imagePath: cartController.getItems[index].img ==
+                                      null
+                                  ? AssetImage('assets/images/cart.jpg')
+                                  : NetworkImage(
+                                          "http://10.0.2.2:8000/${cartController.getItems[index].img}")
+                                      as ImageProvider,
                               quantity:
                                   cartController.getItems[index].quantity!,
                               onAdd: () {

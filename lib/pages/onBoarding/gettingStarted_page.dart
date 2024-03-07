@@ -10,7 +10,7 @@ class GetStartedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFCDB2),
+      backgroundColor: Color(0xFFFFFFFF),
       body: SafeArea(
         child: Container(
           height: double.infinity,
@@ -55,7 +55,7 @@ class GetStartedPage extends StatelessWidget {
                                 .zero, // Bottom-right corner square (0 circular)
                           ),
                           child: Image.asset(
-                            'assets/images/ph1.png',
+                            'assets/images/2.jpg',
                             width: Dimension.screenWidth /
                                 2, // Adjust the width as needed
                             height: Dimension.height30 *
@@ -79,7 +79,7 @@ class GetStartedPage extends StatelessWidget {
                                 3), // Bottom-right corner square (0 circular)
                           ),
                           child: Image.asset(
-                            'assets/images/ph2.png',
+                            'assets/images/1.jpg',
                             width: Dimension.screenWidth /
                                 2, // Adjust the width as needed
                             height: Dimension.height30 *
@@ -102,7 +102,7 @@ class GetStartedPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'The best Tradment App in Syria',
+                        'New Tradement Way in Syria',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: 'Schyler',
